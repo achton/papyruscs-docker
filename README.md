@@ -1,6 +1,8 @@
 PapyrusCS container image
 =========================
 
+[![Build status](https://img.shields.io/docker/cloud/build/achton/papyruscs-docker.svg)](https://hub.docker.com/r/achton/papyruscs-docker) [![Docker pulls](https://img.shields.io/docker/pulls/achton/papyruscs-docker.svg)](https://hub.docker.com/r/achton/papyruscs-docker)
+
 This image containerizes the Minecraft mapper [PapyrusCS](https://github.com/mjungnickel18/papyruscs) such that it can be used to effectively render worlds into HTML maps.
 
 This image does *not*;
@@ -63,3 +65,5 @@ $ docker-compose run \
 ```
 
 See [PapyrusCS usage](https://github.com/mjungnickel18/papyruscs#usage) for a list of all available options.
+
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
