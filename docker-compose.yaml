@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   papyruscs:
-    image: achton/papyruscs-docker
+    image: achton/papyruscs-docker:latest
     # Here simply assuming that ./worlds and ./output folders exist.
     volumes:
       - ./worlds:/app/worlds:rw

@@ -5,13 +5,13 @@ PapyrusCS container image
 
 This image containerizes the Minecraft mapper [PapyrusCS](https://github.com/mjungnickel18/papyruscs) such that it can be used to effectively render worlds into HTML maps.
 
-This image does *not*;
-- provide a mechanism for fetching your world data (you should mount it into the container).
-- do anything fancy to hand you the generated output (you should mount a volume for this too).
-- serve the generated HTML (you can use any basic HTTP container image for that).
+This image does *not*:
+- provide a mechanism for fetching your world data (you should mount it into the container)
+- do anything fancy to hand you the generated output (you should mount a volume for this too)
+- serve the generated HTML (you can use any basic HTTP container image for that)
 
 This image *does*:
-- contain a `master` version of the PapyrusCS source
+- contain a recent version of the PapyrusCS source
 - hold a compiled binary built under .NET Core 3.1
 - use the latest Vanilla texture pack
 - let you pass arbitrary options to PapyrusCS via the Docker runtime
