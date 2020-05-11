@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 ARG DEBIAN_FRONTEND=noninteractive
+ARG PAPYRUSCS_SHA=a1d25241af5a55636e8bdee591abc971abdf96ce
 
 # Install build dependencies.
 RUN apt-get update \
@@ -11,9 +12,9 @@ RUN apt-get update \
 WORKDIR /tmp
 
 # Fetch latest PapyrusCS codebase and move into place.
-RUN curl -sLS -o papyruscs-master.tar.gz https://github.com/mjungnickel18/papyruscs/tarball/master \
+RUN curl -sLS -o papyruscs-release.zip https://github.com/mjungnickel18/papyruscs/archive/$PAPYRUSCS_SHA.zip \
     && mkdir ./papyruscs \
-    && tar -xzf papyruscs-master.tar.gz -C ./papyruscs \
+    && unzip papyruscs-release.zip -d ./papyruscs \
     && rm -rf /app \
     && find ./papyruscs/ -maxdepth 1 -mindepth 1 -type d -exec mv {} /app \;
 
@@ -28,7 +29,7 @@ RUN curl -sLS -o Vanilla_Resource_Pack.zip https://aka.ms/resourcepacktemplate \
 # NOTE: The Release build configuration is broken currently, so use Debug.
 WORKDIR /app
 RUN dotnet publish PapyrusCs -c Debug --self-contained --runtime linux-x64
-RUN chmod +x ./PapyrusCs/bin/Debug/netcoreapp3.0/linux-x64/publish/PapyrusCs
+RUN chmod +x ./PapyrusCs/bin/Debug/netcoreapp3.1/linux-x64/publish/PapyrusCs
 
 # -----------------------------------------------------------------------------
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1 AS runtime
@@ -48,6 +49,6 @@ RUN apt-get update \
 COPY --from=build /app/ ./
 
 # Add binary to path.
-ENV PATH /app/PapyrusCs/bin/Debug/netcoreapp3.0/linux-x64/publish/:$PATH
+ENV PATH /app/PapyrusCs/bin/Debug/netcoreapp3.1/linux-x64/publish/:$PATH
 
 ENTRYPOINT ["PapyrusCs"]
