@@ -14,7 +14,7 @@ WORKDIR /tmp
 # Fetch latest PapyrusCS codebase and move into place.
 RUN curl -sLS -o papyruscs-release.zip https://github.com/mjungnickel18/papyruscs/archive/$PAPYRUSCS_SHA.zip \
     && mkdir ./papyruscs \
-    && unzip papyruscs-release.zip -d ./papyruscs \
+    && unzip -q papyruscs-release.zip -d ./papyruscs \
     && rm -rf /app \
     && find ./papyruscs/ -maxdepth 1 -mindepth 1 -type d -exec mv {} /app \;
 
