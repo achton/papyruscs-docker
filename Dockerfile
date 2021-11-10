@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 ARG DEBIAN_FRONTEND=noninteractive
-ARG PAPYRUSCS_SHA=8032db803e291a2838639c4e8693c66bdcb56648
+ARG PAPYRUSCS_SHA=44ea82a22ccadb3d6a803514d329119030c4548f
 
 # Install build dependencies.
 RUN apt-get update \
