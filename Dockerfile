@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 ARG DEBIAN_FRONTEND=noninteractive
-ARG PAPYRUSCS_SHA=44ea82a22ccadb3d6a803514d329119030c4548f
+#ARG PACKAGE_URL=https://github.com/papyrus-mc/papyruscs/archive/refs/heads/master.zip
+# Fix for 1.18, see https://github.com/papyrus-mc/papyruscs/pull/95
+ARG PACKAGE_URL=https://github.com/hrmorley34/papyruscs/archive/refs/heads/update-to-1.18.0.zip
 
 # Install build dependencies.
 RUN apt-get update \
@@ -12,7 +14,7 @@ RUN apt-get update \
 WORKDIR /tmp
 
 # Fetch latest PapyrusCS codebase and move into place.
-RUN curl -sLS -o papyruscs-release.zip https://github.com/mjungnickel18/papyruscs/archive/$PAPYRUSCS_SHA.zip \
+RUN curl -sLS -o papyruscs-release.zip $PACKAGE_URL \
     && mkdir ./papyruscs \
     && unzip -q papyruscs-release.zip -d ./papyruscs \
     && rm -rf /app \
