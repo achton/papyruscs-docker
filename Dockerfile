@@ -1,8 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 ARG DEBIAN_FRONTEND=noninteractive
-#ARG PACKAGE_URL=https://github.com/papyrus-mc/papyruscs/archive/refs/heads/master.zip
-# Fix for 1.18, see https://github.com/papyrus-mc/papyruscs/pull/95
-ARG PACKAGE_URL=https://github.com/hrmorley34/papyruscs/archive/refs/heads/update-to-1.18.0.zip
+ARG PACKAGE_URL=https://github.com/papyrus-mc/papyruscs/archive/refs/heads/master.zip
 
 # Install build dependencies.
 RUN apt-get update \
@@ -21,17 +19,16 @@ RUN curl -sLS -o papyruscs-release.zip $PACKAGE_URL \
     && find ./papyruscs/ -maxdepth 1 -mindepth 1 -type d -exec mv {} /app \;
 
 # Fetch and replace textures.
-RUN curl -sLS -o Vanilla_Resource_Pack.zip https://aka.ms/resourcepacktemplate \
-    && unzip -q Vanilla_Resource_Pack.zip \
+RUN curl -sLS -o resource_pack.zip https://github.com/Mojang/bedrock-samples/archive/refs/heads/main.zip \
+    && unzip -q resource_pack.zip \
     && rm -rf /app/textures/blocks \
-    && cp -af textures/blocks /app/textures/ \
-    && cp -af textures/terrain_texture.json /app/textures/
+    && cp -af bedrock-samples-main/resource_pack/textures/blocks /app/textures/ \
+    && cp -af bedrock-samples-main/resource_pack/textures/terrain_texture.json /app/textures/
 
 # Compile PapyrusCS for linux-x64 and make binary executable.
-# NOTE: The Release build configuration is broken currently, so use Debug.
 WORKDIR /app
-RUN dotnet publish PapyrusCs -c Debug --self-contained --runtime linux-x64
-RUN chmod +x ./PapyrusCs/bin/Debug/netcoreapp3.1/linux-x64/publish/PapyrusCs
+RUN dotnet publish PapyrusCs -c Release --self-contained --runtime linux-x64
+RUN chmod +x ./PapyrusCs/bin/Release/netcoreapp3.1/linux-x64/publish/PapyrusCs
 
 # -----------------------------------------------------------------------------
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1 AS runtime
@@ -51,6 +48,6 @@ RUN apt-get update \
 COPY --from=build /app/ ./
 
 # Add binary to path.
-ENV PATH /app/PapyrusCs/bin/Debug/netcoreapp3.1/linux-x64/publish/:$PATH
+ENV PATH /app/PapyrusCs/bin/Release/netcoreapp3.1/linux-x64/publish/:$PATH
 
 ENTRYPOINT ["PapyrusCs"]
